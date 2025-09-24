@@ -1,0 +1,22 @@
+module.exports = {
+  apps: [{
+    name: 'option-learner-guide',
+    script: '{{NODE_BIN}}',
+    args: '{{PROJECT_DIR}}/node_modules/.bin/next start -p {{PORT}}',
+    cwd: '{{PROJECT_DIR}}',
+    instances: 1,
+    exec_mode: 'fork',
+    watch: false,
+    max_memory_restart: '500M',
+    env: {
+      NODE_ENV: 'production',
+      PORT: '{{PORT}}',
+      NEXT_TELEMETRY_DISABLED: '1'
+    },
+    error_file: '/var/log/pm2/option-learner-guide.error.log',
+    out_file: '/var/log/pm2/option-learner-guide.out.log',
+    log_file: '/var/log/pm2/option-learner-guide.log',
+    time: true,
+    log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
+  }]
+}

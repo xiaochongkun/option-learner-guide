@@ -1,0 +1,24 @@
+[Unit]
+Description=Option Learner Guide - Next.js Application
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=kunkka
+Group=kunkka
+WorkingDirectory={{PROJECT_DIR}}
+Environment=NODE_ENV=production
+Environment=PORT={{PORT}}
+Environment=NEXT_TELEMETRY_DISABLED=1
+ExecStart={{NODE_BIN}} {{PROJECT_DIR}}/node_modules/.bin/next start -p {{PORT}}
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=option-learner-guide
+KillMode=mixed
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

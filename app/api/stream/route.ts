@@ -1,5 +1,8 @@
 import { NextRequest } from 'next/server'
 
+// 强制动态渲染，避免构建时生成静态页面
+export const dynamic = 'force-dynamic'
+
 /**
  * SSE 实时流：
  * - 定时推送 { type:'tick', S0:number } 作为示例（后续可替换为真实价源）
