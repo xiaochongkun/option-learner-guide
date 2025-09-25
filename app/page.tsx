@@ -59,11 +59,11 @@ export default function Page(){
     <main style={{maxWidth:1080, margin:'0 auto', padding:20, position:'relative'}}>
       <div style={{position:'absolute', top:20, left:20, display:'flex', alignItems:'center', gap:8}}>
         <Image
-          src="/signalplus-logo.png"
+          src="/signalplus-logo-vertical.png"
           alt="SignalPlus Logo"
           width={40}
-          height={40}
-          style={{borderRadius:'50%'}}
+          height={60}
+          style={{objectFit:'contain'}}
         />
         <span style={{fontSize:14, color:'#cfd3dc'}}>SignalPlus</span>
       </div>
