@@ -77,7 +77,8 @@
       "Read(//home/kunkka/**)",
       "Bash(PORT=3601 pm2 start npm --name \"option-learner-guide\" -- start)",
       "Bash(PORT=3601 NODE_ENV=production pm2 start npm --name \"option-learner-guide\" -- start)",
-      "Bash(pm2 stop:*)"
+      "Bash(pm2 stop:*)",
+      "Read(///**)"
     ],
     "deny": [],
     "ask": []

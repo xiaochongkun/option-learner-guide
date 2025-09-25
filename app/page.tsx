@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import Image from 'next/image'
 import type { TeachingData, TabBlock } from '@/lib/types'
 import { toSeries } from '@/lib/pnl'
 
@@ -57,11 +58,13 @@ export default function Page(){
   return (
     <main style={{maxWidth:1080, margin:'0 auto', padding:20, position:'relative'}}>
       <div style={{position:'absolute', top:20, left:20, display:'flex', alignItems:'center', gap:8}}>
-        <div style={{
-          width:40, height:40, borderRadius:'50%', background:'#fff',
-          display:'flex', alignItems:'center', justifyContent:'center',
-          fontSize:14, fontWeight:'bold', color:'#69b1ff'
-        }}>S</div>
+        <Image
+          src="/signalplus-logo.png"
+          alt="SignalPlus Logo"
+          width={40}
+          height={40}
+          style={{borderRadius:'50%'}}
+        />
         <span style={{fontSize:14, color:'#cfd3dc'}}>SignalPlus</span>
       </div>
       <header style={{marginTop:60}}>
