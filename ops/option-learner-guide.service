@@ -1,57 +1,24 @@
 [Unit]
 Description=Option Learner Guide - Next.js Application
-Documentation=https://nextjs.org/
-After=network.target network-online.target
-Wants=network-online.target
+After=network.target
+Wants=network.target
 
 [Service]
 Type=simple
 User=kunkka
 Group=kunkka
 WorkingDirectory=/home/kunkka/projects/option-learner-guide
-
-# 环境变量
 Environment=NODE_ENV=production
-Environment=PORT=3000
-Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-Environment=NODE_OPTIONS="--max-old-space-size=512"
-
-# 执行配置
-ExecStart=/usr/bin/node server.js
-ExecReload=/bin/kill -HUP $MAINPID
-
-# 重启策略
+Environment=PORT=3601
+Environment=NEXT_TELEMETRY_DISABLED=1
+ExecStart=/usr/bin/node /home/kunkka/projects/option-learner-guide/node_modules/.bin/next start -p 3601
 Restart=always
-RestartSec=5
-StartLimitInterval=60s
-StartLimitBurst=3
-
-# 进程管理
-KillMode=mixed
-KillSignal=SIGTERM
-TimeoutStopSec=30
-
-# 安全配置
-NoNewPrivileges=yes
-PrivateTmp=yes
-ProtectSystem=strict
-ReadWritePaths=/home/kunkka/projects/option-learner-guide
-ProtectHome=read-only
-ProtectKernelTunables=yes
-ProtectKernelModules=yes
-ProtectControlGroups=yes
-
-# 资源限制
-LimitNOFILE=65536
-LimitNPROC=4096
-
-# 日志配置
+RestartSec=10
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=option-learner-guide
-
-# 工作目录权限
-UMask=0027
+KillMode=mixed
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target

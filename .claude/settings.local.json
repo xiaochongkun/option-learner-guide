@@ -63,7 +63,21 @@
       "Bash(NEW_DOMAIN='option-learner-guide-kunkka.opsignalplus.com')",
       "Bash(OLD_DOMAIN='kunkka.opsignalplus.com')",
       "Bash(UPSTREAM='127.0.0.1:3601')",
-      "Bash(set -euo pipefail)"
+      "Bash(set -euo pipefail)",
+      "Bash(./ops/service-manager.sh:*)",
+      "Bash(./ops/deploy.sh:*)",
+      "Bash(pm2 delete:*)",
+      "Bash(pm2 start:*)",
+      "Bash(pm2 save:*)",
+      "Bash(pm2 status:*)",
+      "Bash(pm2 restart:*)",
+      "WebFetch(domain:option-learner-guide-kunkka.opsignalplus.com)",
+      "Bash(pm2 logs:*)",
+      "Read(//home/kunkka/projects/**)",
+      "Read(//home/kunkka/**)",
+      "Bash(PORT=3601 pm2 start npm --name \"option-learner-guide\" -- start)",
+      "Bash(PORT=3601 NODE_ENV=production pm2 start npm --name \"option-learner-guide\" -- start)",
+      "Bash(pm2 stop:*)"
     ],
     "deny": [],
     "ask": []

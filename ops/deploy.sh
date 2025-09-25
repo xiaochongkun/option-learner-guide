@@ -68,7 +68,7 @@ $NPM_BIN run build
 echo "✓ 项目构建完成"
 
 echo "=== 3. 生成配置文件 ==="
-sed "s/{{PORT}}/$PORT/g; s|{{PROJECT_DIR}}|$PROJECT_DIR|g; s|{{NODE_BIN}}|$NODE_BIN|g" ops/ecosystem.config.js.template > ops/ecosystem.config.js
+sed "s/{{PORT}}/$PORT/g; s|{{PROJECT_DIR}}|$PROJECT_DIR|g; s|{{NODE_BIN}}|$NODE_BIN|g" ops/ecosystem.config.js.template > ops/ecosystem.config.cjs
 sed "s/{{PORT}}/$PORT/g; s|{{PROJECT_DIR}}|$PROJECT_DIR|g; s|{{NODE_BIN}}|$NODE_BIN|g" ops/option-learner-guide.service.template > ops/option-learner-guide.service
 sed "s/{{DOMAIN}}/$DOMAIN/g; s/{{PORT}}/$PORT/g" ops/nginx.conf.template > ops/nginx.conf
 echo "✓ 配置文件生成完成"
@@ -81,7 +81,7 @@ if [[ "$MODE" == "pm2" ]]; then
     fi
 
     pm2 delete option-learner-guide 2>/dev/null || true
-    pm2 start ops/ecosystem.config.js
+    pm2 start ops/ecosystem.config.cjs
     pm2 save
     echo "✓ PM2 部署完成"
 
