@@ -9,11 +9,14 @@ export default function Page(){
   const [active, setActive] = useState<string>('')
   const [S0, setS0] = useState<number>(60000)
   const [btcPrice, setBtcPrice] = useState<number>(0)
+  const [lastUpdated, setLastUpdated] = useState<string>('')
   const esRef = useRef<EventSource|null>(null)
 
   useEffect(() => {
     fetch('/api/teaching', { cache:'no-store' }).then(r=>r.json()).then((d:TeachingData) => {
       setData(d); setActive(d.tabs[0]?.id ?? '')
+    }).catch((error) => {
+      console.error('Failed to fetch teaching data:', error)
     })
   }, [])
 
@@ -26,8 +29,19 @@ export default function Page(){
         const price = parseFloat(data.price)
         setBtcPrice(price)
         setS0(price)
+
+        // 设置当前时间戳（UTC+8）
+        const now = new Date()
+        const utc8Time = new Date(now.getTime() + 8 * 60 * 60 * 1000)
+        const timeString = utc8Time.toISOString().replace('T', ' ').replace(/\.\d{3}Z/, ' UTC+8')
+        setLastUpdated(timeString)
       } catch (error) {
         console.error('Failed to fetch BTC price:', error)
+        // API失败时也要设置时间戳
+        const now = new Date()
+        const utc8Time = new Date(now.getTime() + 8 * 60 * 60 * 1000)
+        const timeString = utc8Time.toISOString().replace('T', ' ').replace(/\.\d{3}Z/, ' UTC+8')
+        setLastUpdated(timeString)
       }
     }
 
@@ -69,8 +83,12 @@ export default function Page(){
       </div>
       <header style={{marginTop:60}}>
         <h1 style={{margin:'8px 0 4px'}}>期权新手教学</h1>
-        <p style={{opacity:.8, margin:0}}>你认为 BTC 接下来会：</p>
-        <p style={{opacity:.7, fontSize:13}}>当前 BTC 价格：{btcPrice ? btcPrice.toFixed(2) : '加载中...'} USDT</p>
+        <p style={{opacity:.8, margin:0}}>
+          {btcPrice ? `当前 BTC 价格：${btcPrice.toFixed(2)} USDT（数据来源：Binance + ${lastUpdated}）` :
+           (lastUpdated ? `当前 BTC 价格：加载中... USDT（获取时间：${lastUpdated}）` :
+           (data?.meta.spot_assumption || '当前 BTC 价格：加载中... USDT'))}<br/>
+          你认为 BTC 接下来会：
+        </p>
       </header>
 
       {/* Tabs */}
@@ -106,16 +124,7 @@ export default function Page(){
                 <h3 style={{margin:'0 0 8px', fontSize:18}}>{i+1}. {s.name}</h3>
                 <div style={{opacity:.85}}>{s.summary}</div>
                 <div style={{marginTop:6, opacity:.8, fontSize:14}}>
-                  规则：{s.name.includes('Call') || s.name.includes('看涨') ?
-                    `买入1张${callStrike}行权价的看涨期权CALL，支出权利金为${callPremium} USDT` :
-                    s.name.includes('Put') || s.name.includes('看跌') ?
-                    `买入1张${putStrike}行权价的看跌期权PUT，支出权利金为${putPremium} USDT` :
-                    s.legs_rule
-                  }
-                  <div style={{marginTop:4}}>
-                    <div>Call 行权价: {callStrike} USDT，权利金: {callPremium} USDT</div>
-                    <div>Put 行权价: {putStrike} USDT，权利金: {putPremium} USDT</div>
-                  </div>
+                  {s.legs_rule}
                 </div>
 
                 <div style={{marginTop:10, color:'#cfd3dc', fontSize:13, textTransform:'uppercase', letterSpacing:'.08em'}}>权利金随价变化</div>

@@ -2,8 +2,8 @@
   "meta": {
     "title": "新手教学",
     "subtitle": "你认为 BTC 接下来会：",
-    "spot_assumption": "参考示例价 S0 = 60000（仅演示用）",
-    "version": "2.0.0",
+    "spot_assumption": "当前 BTC 价格：109336.55 USDT（数据来源：Binance + 2024-12-28 14:30 UTC）",
+    "version": "2.1.0",
     "last_updated": "2025-09-27",
     "author": "SignalPlus Trading Team",
     "reviewer": "Risk Management Team",
@@ -18,9 +18,9 @@
         {
           "name": "看涨期权 (Long Call)",
           "summary": "最简单的看涨策略，支付权利金获得上涨收益权利",
-          "legs_rule": "建立单腿看涨头寸：买入平价看涨期权",
+          "legs_rule": "规则：买入1张110000行权价的看涨期权CALL，支出权利金为2750.00 USDT",
           "legs": [
-            { "action": "buy", "type": "call", "strike": "expr:S0*1.033", "qty": 1, "premium": 3000 }
+            { "action": "buy", "type": "call", "strike": "110000", "qty": 1, "premium": 2750 }
           ],
           "audience_level": "beginner",
           "prerequisites": ["理解期权基本概念", "了解权利金概念"],
@@ -36,8 +36,8 @@
           ],
           "payoff": {
             "max_profit": "理论无限",
-            "max_loss": "3000（支付权利金）",
-            "breakeven": "65000（行权价 + 权利金）"
+            "max_loss": "2750.00 USDT",
+            "breakeven": "112750.00 USDT"
           },
           "risks": [
             "时间价值衰减",
@@ -48,47 +48,48 @@
           "assumptions": ["价格将显著上涨", "上涨幅度超过盈亏平衡点", "在到期前实现目标价格"],
           "constraints": ["需要支付全额权利金", "损失限于权利金", "收益取决于价格上涨幅度"],
           "worked_examples": [
-            {"scenario": "BTC涨至70000", "calculation": "收益 = max(70000-62000, 0) - 3000 = 5000", "result": "盈利5000"}
+            {"scenario": "BTC涨至120000", "calculation": "收益 = max(120000-110000, 0) - 2750 = 7250", "result": "盈利7250 USDT"}
           ],
           "quiz": [
-            {"question": "如果BTC跌至50000，损失是多少？", "answer": "3000（权利金）", "explanation": "跌破行权价时，期权无价值，损失为支付的权利金"}
+            {"question": "如果BTC跌至100000，损失是多少？", "answer": "2750 USDT（权利金）", "explanation": "跌破行权价时，期权无价值，损失为支付的权利金"}
           ],
           "market_signals": ["技术指标显示突破", "交易量放大", "市场情绪转向乐观"],
           "use_cases": ["预期重大利好消息", "技术突破确认", "对冲空头头寸"],
           "tags": ["新手友好", "单腿策略", "看涨", "有限损失"],
           "param_templates": {"conservative": {"strike_ratio": 1.05}, "aggressive": {"strike_ratio": 1.15}},
           "param_bounds": {"strike_ratio": {"min": 1.02, "max": 1.3}, "premium_ratio": {"min": 0.02, "max": 0.08}},
-          "plot_hints": {"x_axis": "标的价格", "y_axis": "损益", "breakeven_line": true},
+          "plot_hints": {"x_axis": "标的价格", "y_axis": "损益", "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_breakeven": true, "color_profits": "green", "color_losses": "red"},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "看涨期权可能到期无价值",
           "jurisdiction_notes": "遵循当地金融监管要求",
           "sources": ["期权定价理论", "Black-Scholes模型"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "添加结构化字段", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏平衡点计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.long_call"},
           "a11y_notes": "图表包含文字描述，支持屏幕阅读器",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-3000" },
-              { "S": "S0×0.8", "PnL": "-3000" },
-              { "S": "S0×0.9", "PnL": "-3000" },
-              { "S": "S0", "PnL": "-1000" },
-              { "S": "S0×1.1", "PnL": "5000" },
-              { "S": "S0×1.2", "PnL": "9000" },
-              { "S": "S0×1.3", "PnL": "15000" }
+              { "S": "95000", "PnL": "-2750" },
+              { "S": "100000", "PnL": "-2750" },
+              { "S": "105000", "PnL": "-2750" },
+              { "S": "110000", "PnL": "-2750" },
+              { "S": "112750", "PnL": "0" },
+              { "S": "115000", "PnL": "2250" },
+              { "S": "120000", "PnL": "7250" }
             ]
           }
         },
         {
           "name": "牛市价差 (Bull Call Spread)",
           "summary": "买入低行权价看涨期权，卖出高行权价看涨期权，降低成本但限制收益",
-          "legs_rule": "建立牛市看涨价差：买入近价看涨，同时卖出更高执行价看涨",
+          "legs_rule": "规则：买入110000行权价CALL支出2750 USDT，卖出120000行权价CALL收入1200 USDT，净支出1550 USDT",
           "legs": [
-            { "action": "buy", "type": "call", "strike": "expr:S0", "qty": 1, "premium": 4000 },
-            { "action": "sell", "type": "call", "strike": "expr:S0*1.1", "qty": 1, "premium": 2000 }
+            { "action": "buy", "type": "call", "strike": "110000", "qty": 1, "premium": 2750 },
+            { "action": "sell", "type": "call", "strike": "120000", "qty": 1, "premium": 1200 }
           ],
           "audience_level": "intermediate",
           "prerequisites": ["理解期权价差概念", "掌握基础期权策略"],
@@ -103,9 +104,9 @@
             "时间流逝对净头寸影响有限"
           ],
           "payoff": {
-            "max_profit": "6000（行权价差 - 净支出）",
-            "max_loss": "2000（净支出）",
-            "breakeven": "62000（低行权价 + 净支出）"
+            "max_profit": "8450 USDT",
+            "max_loss": "1550 USDT",
+            "breakeven": "111550 USDT"
           },
           "risks": [
             "收益有上限",
@@ -116,7 +117,7 @@
           "assumptions": ["价格温和上涨", "波动率相对稳定", "两腿期权正常行权"],
           "constraints": ["最大收益 = 行权价差 - 净支出", "需要同时管理两个头寸"],
           "worked_examples": [
-            {"scenario": "BTC涨至66000", "calculation": "收益 = 66000-60000 - 2000 = 4000", "result": "达到最大收益"}
+            {"scenario": "BTC涨至120000", "calculation": "收益 = (120000-110000) - 1550 = 8450", "result": "达到最大收益8450 USDT"}
           ],
           "quiz": [
             {"question": "为什么要卖出高行权价call？", "answer": "降低建仓成本", "explanation": "收取的权利金可以抵消部分买入成本"}
@@ -126,27 +127,28 @@
           "tags": ["价差策略", "风险有限", "收益有限", "中级策略"],
           "param_templates": {"narrow": {"spread_width": 0.05}, "wide": {"spread_width": 0.15}},
           "param_bounds": {"spread_width": {"min": 0.03, "max": 0.25}},
-          "plot_hints": {"show_max_profit": true, "show_max_loss": true},
+          "plot_hints": {"show_max_profit": true, "show_max_loss": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_max_profit_zone": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "价差策略收益有限",
           "jurisdiction_notes": "遵循价差交易规则",
           "sources": ["价差交易策略", "期权组合理论"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "添加结构化字段和legs数组", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.bull_call_spread"},
           "a11y_notes": "价差图表包含双腿说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-2000" },
-              { "S": "S0×0.8", "PnL": "-2000" },
-              { "S": "S0×0.9", "PnL": "-2000" },
-              { "S": "S0", "PnL": "-2000" },
-              { "S": "S0×1.1", "PnL": "4000" },
-              { "S": "S0×1.2", "PnL": "6000" },
-              { "S": "S0×1.3", "PnL": "6000" }
+              { "S": "100000", "PnL": "-1550" },
+              { "S": "105000", "PnL": "-1550" },
+              { "S": "110000", "PnL": "-1550" },
+              { "S": "111550", "PnL": "0" },
+              { "S": "115000", "PnL": "3450" },
+              { "S": "120000", "PnL": "8450" },
+              { "S": "125000", "PnL": "8450" }
             ]
           }
         }
@@ -160,9 +162,9 @@
         {
           "name": "看跌期权 (Long Put)",
           "summary": "最简单的看跌策略，支付权利金获得下跌收益权利",
-          "legs_rule": "建立单腿看跌头寸：买入平价看跌期权",
+          "legs_rule": "规则：买入1张105000行权价的看跌期权PUT，支出权利金为2200.00 USDT",
           "legs": [
-            { "action": "buy", "type": "put", "strike": "expr:S0*0.967", "qty": 1, "premium": 3000 }
+            { "action": "buy", "type": "put", "strike": "105000", "qty": 1, "premium": 2200 }
           ],
           "audience_level": "beginner",
           "prerequisites": ["理解期权基本概念", "了解看跌期权机制"],
@@ -177,9 +179,9 @@
             "时间流逝：Put 权利金下降"
           ],
           "payoff": {
-            "max_profit": "55000（行权价 - 权利金）",
-            "max_loss": "3000（支付权利金）",
-            "breakeven": "55000（行权价 - 权利金）"
+            "max_profit": "102800 USDT",
+            "max_loss": "2200.00 USDT",
+            "breakeven": "102800 USDT"
           },
           "risks": [
             "时间价值衰减",
@@ -190,7 +192,7 @@
           "assumptions": ["价格将显著下跌", "下跌幅度超过盈亏平衡点"],
           "constraints": ["收益有上限（行权价-权利金）", "需要支付全额权利金"],
           "worked_examples": [
-            {"scenario": "BTC跌至45000", "calculation": "收益 = 58000 - max(45000, 0) - 3000 = 10000", "result": "盈利10000"}
+            {"scenario": "BTC跌至90000", "calculation": "收益 = 105000 - max(90000, 0) - 2200 = 12800", "result": "盈利12800 USDT"}
           ],
           "quiz": [
             {"question": "Put期权的最大理论收益是多少？", "answer": "行权价减去权利金", "explanation": "当标的价格跌至0时达到最大收益"}
@@ -200,37 +202,38 @@
           "tags": ["新手友好", "看跌策略", "保护性策略"],
           "param_templates": {"at_money": {"strike_ratio": 1.0}, "out_money": {"strike_ratio": 0.95}},
           "param_bounds": {"strike_ratio": {"min": 0.8, "max": 1.02}},
-          "plot_hints": {"show_downside_protection": true},
+          "plot_hints": {"show_downside_protection": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"emphasize_breakeven": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "看跌期权可能到期无价值",
           "jurisdiction_notes": "遵循当地期权交易规则",
           "sources": ["看跌期权定价", "风险管理理论"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "结构化改造", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.long_put"},
           "a11y_notes": "包含看跌策略详细说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "15000" },
-              { "S": "S0×0.8", "PnL": "9000" },
-              { "S": "S0×0.9", "PnL": "3000" },
-              { "S": "S0", "PnL": "-3000" },
-              { "S": "S0×1.1", "PnL": "-3000" },
-              { "S": "S0×1.2", "PnL": "-3000" },
-              { "S": "S0×1.3", "PnL": "-3000" }
+              { "S": "85000", "PnL": "17800" },
+              { "S": "90000", "PnL": "12800" },
+              { "S": "95000", "PnL": "7800" },
+              { "S": "100000", "PnL": "2800" },
+              { "S": "102800", "PnL": "0" },
+              { "S": "105000", "PnL": "-2200" },
+              { "S": "110000", "PnL": "-2200" }
             ]
           }
         },
         {
           "name": "熊市价差 (Bear Put Spread)",
           "summary": "买入高行权价看跌期权，卖出低行权价看跌期权，降低成本但限制收益",
-          "legs_rule": "建立熊市看跌价差：买入高执行价看跌，同时卖出低执行价看跌",
+          "legs_rule": "规则：买入105000行权价PUT支出2200 USDT，卖出95000行权价PUT收入800 USDT，净支出1400 USDT",
           "legs": [
-            { "action": "buy", "type": "put", "strike": "expr:S0", "qty": 1, "premium": 4000 },
-            { "action": "sell", "type": "put", "strike": "expr:S0*0.867", "qty": 1, "premium": 2000 }
+            { "action": "buy", "type": "put", "strike": "105000", "qty": 1, "premium": 2200 },
+            { "action": "sell", "type": "put", "strike": "95000", "qty": 1, "premium": 800 }
           ],
           "audience_level": "intermediate",
           "prerequisites": ["理解价差策略", "掌握基础期权知识"],
@@ -245,9 +248,9 @@
             "时间流逝对净头寸影响有限"
           ],
           "payoff": {
-            "max_profit": "6000（行权价差 - 净支出）",
-            "max_loss": "2000（净支出）",
-            "breakeven": "58000（高行权价 - 净支出）"
+            "max_profit": "8600 USDT",
+            "max_loss": "1400 USDT",
+            "breakeven": "103600 USDT"
           },
           "risks": [
             "收益有上限",
@@ -258,7 +261,7 @@
           "assumptions": ["价格温和下跌", "跌幅在价差区间内"],
           "constraints": ["最大收益 = 价差宽度 - 净支出", "需要管理双腿头寸"],
           "worked_examples": [
-            {"scenario": "BTC跌至52000", "calculation": "收益 = (60000-52000) - 2000 = 6000", "result": "达到最大收益"}
+            {"scenario": "BTC跌至95000", "calculation": "收益 = (105000-95000) - 1400 = 8600", "result": "达到最大收益8600 USDT"}
           ],
           "quiz": [
             {"question": "为什么要卖出低行权价put？", "answer": "降低净成本", "explanation": "收取权利金减少总体策略成本"}
@@ -268,27 +271,28 @@
           "tags": ["价差策略", "看跌", "成本效益", "中级策略"],
           "param_templates": {"tight": {"spread_width": 0.1}, "wide": {"spread_width": 0.2}},
           "param_bounds": {"spread_width": {"min": 0.05, "max": 0.3}},
-          "plot_hints": {"emphasize_profit_zone": true},
+          "plot_hints": {"emphasize_profit_zone": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_optimal_range": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "看跌价差收益有限",
           "jurisdiction_notes": "遵循价差交易监管",
           "sources": ["熊市价差策略", "期权价差理论"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "结构化升级", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.bear_put_spread"},
           "a11y_notes": "熊市价差图表说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "6000" },
-              { "S": "S0×0.8", "PnL": "6000" },
-              { "S": "S0×0.9", "PnL": "2000" },
-              { "S": "S0", "PnL": "-2000" },
-              { "S": "S0×1.1", "PnL": "-2000" },
-              { "S": "S0×1.2", "PnL": "-2000" },
-              { "S": "S0×1.3", "PnL": "-2000" }
+              { "S": "85000", "PnL": "8600" },
+              { "S": "90000", "PnL": "8600" },
+              { "S": "95000", "PnL": "8600" },
+              { "S": "100000", "PnL": "3600" },
+              { "S": "103600", "PnL": "0" },
+              { "S": "105000", "PnL": "-1400" },
+              { "S": "110000", "PnL": "-1400" }
             ]
           }
         }
@@ -302,10 +306,10 @@
         {
           "name": "备兑看涨 (Covered Call)",
           "summary": "持有现货同时卖出看涨期权，赚取权利金收入",
-          "legs_rule": "建立备兑看涨策略：持有标的资产同时卖出看涨期权",
+          "legs_rule": "规则：持有1个BTC现货（当前价值109336.55 USDT）+ 卖出115000行权价CALL收入1800 USDT",
           "legs": [
-            { "action": "hold", "type": "spot", "strike": "expr:S0", "qty": 1, "premium": 0 },
-            { "action": "sell", "type": "call", "strike": "expr:S0*1.083", "qty": 1, "premium": 3000 }
+            { "action": "hold", "type": "spot", "strike": "109336.55", "qty": 1, "premium": 0 },
+            { "action": "sell", "type": "call", "strike": "115000", "qty": 1, "premium": 1800 }
           ],
           "audience_level": "intermediate",
           "prerequisites": ["持有标的资产", "理解期权卖方风险", "了解备兑策略"],
@@ -320,9 +324,9 @@
             "时间流逝：有利于卖方"
           ],
           "payoff": {
-            "max_profit": "8000（权利金收入 + 价格上涨至行权价）",
+            "max_profit": "7463.45 USDT",
             "max_loss": "理论很大（现货下跌）",
-            "breakeven": "57000（持股成本 - 权利金）"
+            "breakeven": "107536.55 USDT"
           },
           "risks": [
             "价格大幅上涨错失收益",
@@ -333,7 +337,7 @@
           "assumptions": ["价格温和上涨或横盘", "不会大幅突破行权价", "持有长期看涨"],
           "constraints": ["需要持有现货", "上涨收益有限", "下跌保护有限"],
           "worked_examples": [
-            {"scenario": "BTC涨至65000", "calculation": "收益 = (65000-60000) + 3000 = 8000", "result": "达到最大收益"}
+            {"scenario": "BTC涨至115000", "calculation": "收益 = (115000-109336.55) + 1800 = 7463.45", "result": "达到最大收益7463.45 USDT"}
           ],
           "quiz": [
             {"question": "为什么叫备兑看涨？", "answer": "现货持仓覆盖期权风险", "explanation": "持有现货可以在行权时交付，降低无限风险"}
@@ -343,37 +347,39 @@
           "tags": ["收益增强", "卖方策略", "持仓管理", "中级策略"],
           "param_templates": {"conservative": {"strike_ratio": 1.1}, "aggressive": {"strike_ratio": 1.05}},
           "param_bounds": {"strike_ratio": {"min": 1.02, "max": 1.15}},
-          "plot_hints": {"show_assignment_risk": true, "show_income_enhancement": true},
+          "plot_hints": {"show_assignment_risk": true, "show_income_enhancement": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_call_away_risk": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "存在被提前行权风险",
           "jurisdiction_notes": "遵循备兑策略规定",
           "sources": ["备兑策略理论", "收益增强技术"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善备兑策略结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和现货价格", "author": "系统升级"}],
           "i18n": {"key": "strategies.covered_call"},
           "a11y_notes": "备兑策略包含现货持仓说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-15000" },
-              { "S": "S0×0.8", "PnL": "-9000" },
-              { "S": "S0×0.9", "PnL": "-3000" },
-              { "S": "S0", "PnL": "3000" },
-              { "S": "S0×1.1", "PnL": "8000" },
-              { "S": "S0×1.2", "PnL": "8000" },
-              { "S": "S0×1.3", "PnL": "8000" }
+              { "S": "90000", "PnL": "-17536.55" },
+              { "S": "95000", "PnL": "-12536.55" },
+              { "S": "100000", "PnL": "-7536.55" },
+              { "S": "105000", "PnL": "-2536.55" },
+              { "S": "107536.55", "PnL": "0" },
+              { "S": "110000", "PnL": "2463.45" },
+              { "S": "115000", "PnL": "7463.45" },
+              { "S": "120000", "PnL": "7463.45" }
             ]
           }
         },
         {
           "name": "日历价差 (Calendar Spread)",
           "summary": "卖出近月期权买入远月期权，从时间价值差异中获利",
-          "legs_rule": "建立日历价差：卖出近月期权，买入同行权价远月期权",
+          "legs_rule": "规则：卖出近月110000行权价CALL收入1500 USDT，买入远月110000行权价CALL支出2800 USDT，净支出1300 USDT",
           "legs": [
-            { "action": "sell", "type": "call", "strike": "expr:S0", "qty": 1, "premium": 3500 },
-            { "action": "buy", "type": "call", "strike": "expr:S0", "qty": 1, "premium": 5500 }
+            { "action": "sell", "type": "call", "strike": "110000", "qty": 1, "premium": 1500 },
+            { "action": "buy", "type": "call", "strike": "110000", "qty": 1, "premium": 2800 }
           ],
           "audience_level": "advanced",
           "prerequisites": ["理解时间价值", "了解不同到期日期权", "掌握复杂策略"],
@@ -388,9 +394,9 @@
             "波动率变化影响不同到期日期权"
           ],
           "payoff": {
-            "max_profit": "1500（在行权价附近）",
-            "max_loss": "2000（净支出）",
-            "breakeven": "约 58500 和 61500"
+            "max_profit": "700 USDT",
+            "max_loss": "1300 USDT",
+            "breakeven": "约 108000 和 112000 USDT"
           },
           "risks": [
             "价格偏离行权价",
@@ -401,7 +407,7 @@
           "assumptions": ["价格横盘或温和波动", "近月期权快速衰减", "不被提前行权"],
           "constraints": ["需要管理不同到期日", "最大收益在行权价附近", "时间敏感策略"],
           "worked_examples": [
-            {"scenario": "BTC保持60000附近", "calculation": "收益 = 近月衰减 - 远月衰减", "result": "时间价值差异获利"}
+            {"scenario": "BTC保持110000附近", "calculation": "收益 = 近月衰减 - 远月衰减", "result": "时间价值差异获利"}
           ],
           "quiz": [
             {"question": "为什么叫日历价差？", "answer": "基于不同到期日构建", "explanation": "利用不同到期日期权的时间价值差异"}
@@ -411,27 +417,28 @@
           "tags": ["时间策略", "高级策略", "横盘适用", "精确管理"],
           "param_templates": {"short_term": {"days_diff": 30}, "long_term": {"days_diff": 90}},
           "param_bounds": {"days_diff": {"min": 14, "max": 180}},
-          "plot_hints": {"show_time_decay": true, "show_optimal_zone": true},
+          "plot_hints": {"show_time_decay": true, "show_optimal_zone": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_sweet_spot": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "日历价差需要精确管理",
           "jurisdiction_notes": "遵循不同到期日交易规则",
           "sources": ["日历价差理论", "时间价值策略"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善日历价差结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.calendar_spread"},
           "a11y_notes": "日历价差包含时间维度说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-1500" },
-              { "S": "S0×0.8", "PnL": "-800" },
-              { "S": "S0×0.9", "PnL": "500" },
-              { "S": "S0", "PnL": "1500" },
-              { "S": "S0×1.1", "PnL": "800" },
-              { "S": "S0×1.2", "PnL": "-200" },
-              { "S": "S0×1.3", "PnL": "-1000" }
+              { "S": "100000", "PnL": "-1000" },
+              { "S": "105000", "PnL": "-500" },
+              { "S": "108000", "PnL": "0" },
+              { "S": "110000", "PnL": "700" },
+              { "S": "112000", "PnL": "0" },
+              { "S": "115000", "PnL": "-800" },
+              { "S": "120000", "PnL": "-1100" }
             ]
           }
         }
@@ -445,10 +452,10 @@
         {
           "name": "现金担保看跌 (Cash-Secured Put)",
           "summary": "卖出看跌期权收取权利金，准备现金在被行权时买入",
-          "legs_rule": "建立现金担保看跌：卖出看跌期权并准备等额现金",
+          "legs_rule": "规则：卖出100000行权价PUT收入1600 USDT + 准备100000 USDT现金担保",
           "legs": [
-            { "action": "sell", "type": "put", "strike": "expr:S0*0.917", "qty": 1, "premium": 2000 },
-            { "action": "reserve", "type": "cash", "strike": "expr:S0*0.917", "qty": 55000, "premium": 0 }
+            { "action": "sell", "type": "put", "strike": "100000", "qty": 1, "premium": 1600 },
+            { "action": "reserve", "type": "cash", "strike": "100000", "qty": 100000, "premium": 0 }
           ],
           "audience_level": "intermediate",
           "prerequisites": ["理解期权卖方义务", "准备充足现金", "了解行权机制"],
@@ -463,9 +470,9 @@
             "时间流逝：有利于卖方"
           ],
           "payoff": {
-            "max_profit": "2000（权利金收入）",
-            "max_loss": "53000（行权价 - 权利金）",
-            "breakeven": "53000（行权价 - 权利金）"
+            "max_profit": "1600 USDT",
+            "max_loss": "98400 USDT",
+            "breakeven": "98400 USDT"
           },
           "risks": [
             "价格大幅下跌",
@@ -476,7 +483,7 @@
           "assumptions": ["价格不会大幅下跌", "愿意以行权价买入", "有充足现金储备"],
           "constraints": ["需要准备全额现金", "收益有限", "下跌风险较大"],
           "worked_examples": [
-            {"scenario": "BTC保持60000以上", "calculation": "收益 = 2000（权利金）", "result": "期权到期无价值，保留权利金"}
+            {"scenario": "BTC保持100000以上", "calculation": "收益 = 1600（权利金）", "result": "期权到期无价值，保留权利金1600 USDT"}
           ],
           "quiz": [
             {"question": "为什么需要现金担保？", "answer": "履行行权义务", "explanation": "被行权时需要按行权价买入标的资产"}
@@ -486,38 +493,39 @@
           "tags": ["卖方策略", "现金管理", "入场策略", "中级策略"],
           "param_templates": {"conservative": {"strike_ratio": 0.9}, "aggressive": {"strike_ratio": 0.95}},
           "param_bounds": {"strike_ratio": {"min": 0.8, "max": 0.98}},
-          "plot_hints": {"show_assignment_risk": true, "show_cash_requirement": true},
+          "plot_hints": {"show_assignment_risk": true, "show_cash_requirement": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_assignment_zone": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "存在被行权强制买入风险",
           "jurisdiction_notes": "遵循现金保证金要求",
           "sources": ["现金担保策略", "卖方期权理论"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善现金担保结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.cash_secured_put"},
           "a11y_notes": "现金担保策略包含资金要求说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-11000" },
-              { "S": "S0×0.8", "PnL": "-5000" },
-              { "S": "S0×0.9", "PnL": "1000" },
-              { "S": "S0", "PnL": "2000" },
-              { "S": "S0×1.1", "PnL": "2000" },
-              { "S": "S0×1.2", "PnL": "2000" },
-              { "S": "S0×1.3", "PnL": "2000" }
+              { "S": "85000", "PnL": "-13400" },
+              { "S": "90000", "PnL": "-8400" },
+              { "S": "95000", "PnL": "-3400" },
+              { "S": "98400", "PnL": "0" },
+              { "S": "100000", "PnL": "1600" },
+              { "S": "105000", "PnL": "1600" },
+              { "S": "110000", "PnL": "1600" }
             ]
           }
         },
         {
           "name": "领子期权 (Collar)",
           "summary": "持有现货同时买入看跌卖出看涨期权，限制涨跌风险",
-          "legs_rule": "建立领子策略：持有现货，买入保护性看跌，卖出备兑看涨",
+          "legs_rule": "规则：持有1个BTC现货（109336.55 USDT）+ 买入100000行权价PUT支出1600 USDT + 卖出115000行权价CALL收入1800 USDT，净收入200 USDT",
           "legs": [
-            { "action": "hold", "type": "spot", "strike": "expr:S0", "qty": 1, "premium": 0 },
-            { "action": "buy", "type": "put", "strike": "expr:S0*0.917", "qty": 1, "premium": 2000 },
-            { "action": "sell", "type": "call", "strike": "expr:S0*1.083", "qty": 1, "premium": 1000 }
+            { "action": "hold", "type": "spot", "strike": "109336.55", "qty": 1, "premium": 0 },
+            { "action": "buy", "type": "put", "strike": "100000", "qty": 1, "premium": 1600 },
+            { "action": "sell", "type": "call", "strike": "115000", "qty": 1, "premium": 1800 }
           ],
           "audience_level": "advanced",
           "prerequisites": ["持有现货头寸", "理解三腿策略", "掌握风险管理"],
@@ -532,9 +540,9 @@
             "净权利金流入或流出取决于期权价格"
           ],
           "payoff": {
-            "max_profit": "3000（价格上涨至看涨行权价）",
-            "max_loss": "-7000（价格下跌至看跌行权价）",
-            "breakeven": "约 58000"
+            "max_profit": "5863.45 USDT",
+            "max_loss": "-9136.55 USDT",
+            "breakeven": "109136.55 USDT"
           },
           "risks": [
             "限制上涨收益",
@@ -545,7 +553,7 @@
           "assumptions": ["价格在区间内波动", "持有标的长期看好", "接受有限收益"],
           "constraints": ["需要持有现货", "收益和损失都有限", "管理复杂度高"],
           "worked_examples": [
-            {"scenario": "BTC涨至65000", "calculation": "收益 = (65000-60000) - 1000 = 4000，但被call限制", "result": "实际收益3000"}
+            {"scenario": "BTC涨至115000", "calculation": "收益 = (115000-109336.55) + 200 = 5863.45", "result": "达到最大收益5863.45 USDT"}
           ],
           "quiz": [
             {"question": "领子策略的主要目的是什么？", "answer": "限制风险范围", "explanation": "在保护下跌的同时限制上涨，形成风险走廊"}
@@ -555,27 +563,29 @@
           "tags": ["保护策略", "三腿策略", "风险限制", "高级策略"],
           "param_templates": {"narrow": {"collar_width": 0.15}, "wide": {"collar_width": 0.25}},
           "param_bounds": {"collar_width": {"min": 0.1, "max": 0.35}},
-          "plot_hints": {"show_collar_boundaries": true, "show_protection_zone": true},
+          "plot_hints": {"show_collar_boundaries": true, "show_protection_zone": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_risk_corridor": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "领子策略限制收益和损失",
           "jurisdiction_notes": "遵循复杂策略交易规则",
           "sources": ["领子策略理论", "风险管理技术"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善领子策略结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和现货价格", "author": "系统升级"}],
           "i18n": {"key": "strategies.collar"},
           "a11y_notes": "领子策略包含三腿组合说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-7000" },
-              { "S": "S0×0.8", "PnL": "-7000" },
-              { "S": "S0×0.9", "PnL": "-1000" },
-              { "S": "S0", "PnL": "2000" },
-              { "S": "S0×1.1", "PnL": "3000" },
-              { "S": "S0×1.2", "PnL": "3000" },
-              { "S": "S0×1.3", "PnL": "3000" }
+              { "S": "90000", "PnL": "-9136.55" },
+              { "S": "95000", "PnL": "-9136.55" },
+              { "S": "100000", "PnL": "-9136.55" },
+              { "S": "105000", "PnL": "-4136.55" },
+              { "S": "109136.55", "PnL": "0" },
+              { "S": "110000", "PnL": "863.45" },
+              { "S": "115000", "PnL": "5863.45" },
+              { "S": "120000", "PnL": "5863.45" }
             ]
           }
         }
@@ -589,11 +599,11 @@
         {
           "name": "蝶式期权 (Butterfly)",
           "summary": "买入两端行权价期权，卖出中间行权价期权，在横盘中获利",
-          "legs_rule": "建立蝶式组合：买入两端执行价期权，卖出两倍中间执行价期权",
+          "legs_rule": "规则：买入105000行权价CALL支出3200 USDT + 卖出2张109500行权价CALL收入2×1850=3700 USDT + 买入114000行权价CALL支出800 USDT，净收入700 USDT",
           "legs": [
-            { "action": "buy", "type": "call", "strike": "expr:S0*0.917", "qty": 1, "premium": 6000 },
-            { "action": "sell", "type": "call", "strike": "expr:S0", "qty": 2, "premium": 3000 },
-            { "action": "buy", "type": "call", "strike": "expr:S0*1.083", "qty": 1, "premium": 1000 }
+            { "action": "buy", "type": "call", "strike": "105000", "qty": 1, "premium": 3200 },
+            { "action": "sell", "type": "call", "strike": "109500", "qty": 2, "premium": 1850 },
+            { "action": "buy", "type": "call", "strike": "114000", "qty": 1, "premium": 800 }
           ],
           "audience_level": "advanced",
           "prerequisites": ["理解复杂期权组合", "掌握多腿策略", "了解时间价值"],
@@ -608,9 +618,9 @@
             "波动率下降通常有利"
           ],
           "payoff": {
-            "max_profit": "3000（在中央行权价 60000）",
-            "max_loss": "2000（净支出）",
-            "breakeven": "约 57000 和 63000"
+            "max_profit": "5200 USDT",
+            "max_loss": "700 USDT",
+            "breakeven": "约 105700 和 113300 USDT"
           },
           "risks": [
             "价格偏离中央区域",
@@ -621,7 +631,7 @@
           "assumptions": ["价格横盘震荡", "波动率保持稳定", "时间价值正常衰减"],
           "constraints": ["需要精确价格预测", "管理多腿头寸", "时间敏感"],
           "worked_examples": [
-            {"scenario": "BTC保持60000", "calculation": "收益 = 2×3000 - 6000 - 1000 + 价差收益", "result": "接近最大收益"}
+            {"scenario": "BTC保持109500", "calculation": "收益 = 最大收益5200 USDT", "result": "接近最大收益5200 USDT"}
           ],
           "quiz": [
             {"question": "为什么叫蝶式期权？", "answer": "形状像蝴蝶", "explanation": "损益图形状对称，中间高两端低，像蝴蝶展翅"}
@@ -631,39 +641,41 @@
           "tags": ["中性策略", "横盘获利", "高级策略", "多腿组合"],
           "param_templates": {"tight": {"wing_width": 0.05}, "wide": {"wing_width": 0.15}},
           "param_bounds": {"wing_width": {"min": 0.03, "max": 0.2}},
-          "plot_hints": {"show_butterfly_shape": true, "show_profit_peak": true},
+          "plot_hints": {"show_butterfly_shape": true, "show_profit_peak": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_sweet_spot": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "蝶式策略需要精确管理",
           "jurisdiction_notes": "遵循多腿策略交易规则",
           "sources": ["蝶式期权理论", "中性策略技术"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善蝶式策略结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.butterfly"},
           "a11y_notes": "蝶式期权包含对称结构说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-2000" },
-              { "S": "S0×0.8", "PnL": "-1000" },
-              { "S": "S0×0.9", "PnL": "1000" },
-              { "S": "S0", "PnL": "3000" },
-              { "S": "S0×1.1", "PnL": "1000" },
-              { "S": "S0×1.2", "PnL": "-1000" },
-              { "S": "S0×1.3", "PnL": "-2000" }
+              { "S": "100000", "PnL": "-700" },
+              { "S": "105000", "PnL": "-700" },
+              { "S": "105700", "PnL": "0" },
+              { "S": "107000", "PnL": "2600" },
+              { "S": "109500", "PnL": "5200" },
+              { "S": "112000", "PnL": "2700" },
+              { "S": "113300", "PnL": "0" },
+              { "S": "115000", "PnL": "-700" }
             ]
           }
         },
         {
           "name": "铁鹰式 (Iron Condor)",
           "summary": "同时构建牛市价差和熊市价差，在价格区间内获利",
-          "legs_rule": "建立铁鹰组合：组合牛市价差和熊市价差，形成收益区间",
+          "legs_rule": "规则：卖出100000行权价PUT收入1000 USDT + 买入95000行权价PUT支出400 USDT + 卖出115000行权价CALL收入1200 USDT + 买入120000行权价CALL支出600 USDT，净收入1200 USDT",
           "legs": [
-            { "action": "sell", "type": "put", "strike": "expr:S0*0.867", "qty": 1, "premium": 1000 },
-            { "action": "buy", "type": "put", "strike": "expr:S0*0.8", "qty": 1, "premium": 500 },
-            { "action": "sell", "type": "call", "strike": "expr:S0*1.133", "qty": 1, "premium": 1000 },
-            { "action": "buy", "type": "call", "strike": "expr:S0*1.2", "qty": 1, "premium": 500 }
+            { "action": "sell", "type": "put", "strike": "100000", "qty": 1, "premium": 1000 },
+            { "action": "buy", "type": "put", "strike": "95000", "qty": 1, "premium": 400 },
+            { "action": "sell", "type": "call", "strike": "115000", "qty": 1, "premium": 1200 },
+            { "action": "buy", "type": "call", "strike": "120000", "qty": 1, "premium": 600 }
           ],
           "audience_level": "advanced",
           "prerequisites": ["掌握价差策略", "理解四腿组合", "熟悉复杂管理"],
@@ -678,9 +690,9 @@
             "需要价格保持在区间内"
           ],
           "payoff": {
-            "max_profit": "3000（权利金净收入）",
-            "max_loss": "1000（单边最大风险）",
-            "breakeven": "约 55000 和 65000"
+            "max_profit": "1200 USDT",
+            "max_loss": "3800 USDT",
+            "breakeven": "约 101200 和 113800 USDT"
           },
           "risks": [
             "价格突破区间",
@@ -691,7 +703,7 @@
           "assumptions": ["价格保持区间震荡", "波动率稳定或下降", "时间价值正常衰减"],
           "constraints": ["需要精确区间判断", "四腿头寸管理", "双向风险"],
           "worked_examples": [
-            {"scenario": "BTC保持52000-68000区间", "calculation": "收益 = 净权利金收入 = 1000", "result": "保留大部分权利金"}
+            {"scenario": "BTC保持100000-115000区间", "calculation": "收益 = 净权利金收入 = 1200", "result": "保留权利金1200 USDT"}
           ],
           "quiz": [
             {"question": "铁鹰式何时最有利？", "answer": "价格保持在区间内", "explanation": "卖出的期权到期无价值，保留权利金收入"}
@@ -701,27 +713,29 @@
           "tags": ["区间策略", "四腿组合", "高级策略", "波动率交易"],
           "param_templates": {"narrow": {"range_width": 0.2}, "wide": {"range_width": 0.4}},
           "param_bounds": {"range_width": {"min": 0.15, "max": 0.5}},
-          "plot_hints": {"show_profit_zone": true, "show_breakeven_points": true},
+          "plot_hints": {"show_profit_zone": true, "show_breakeven_points": true, "breakeven_line": "在盈亏平衡点现货价格处用虚线垂直标出"},
           "table_hints": {"highlight_profit_range": true},
+          "pnl_chart_description": "到期PNL图\n在盈亏平衡点现货价格处用虚线垂直标出",
           "disclaimer_local": "铁鹰式需要价格区间判断",
           "jurisdiction_notes": "遵循四腿策略监管要求",
           "sources": ["铁鹰式理论", "区间交易策略"],
           "last_reviewed": "2025-09-27",
           "author": "交易策略团队",
           "reviewer": "风险管理部",
-          "change_log": [{"date": "2025-09-27", "change": "完善铁鹰式结构", "author": "系统升级"}],
+          "change_log": [{"date": "2025-09-27", "change": "更新规则格式和盈亏计算", "author": "系统升级"}],
           "i18n": {"key": "strategies.iron_condor"},
           "a11y_notes": "铁鹰式包含四腿组合详细说明",
           "pnl_table": {
-            "S0_reference": "60000",
+            "S0_reference": "109336.55",
             "rows": [
-              { "S": "S0×0.7", "PnL": "-1000" },
-              { "S": "S0×0.8", "PnL": "1000" },
-              { "S": "S0×0.9", "PnL": "3000" },
-              { "S": "S0", "PnL": "3000" },
-              { "S": "S0×1.1", "PnL": "3000" },
-              { "S": "S0×1.2", "PnL": "1000" },
-              { "S": "S0×1.3", "PnL": "-1000" }
+              { "S": "90000", "PnL": "-3800" },
+              { "S": "95000", "PnL": "-3800" },
+              { "S": "98000", "PnL": "-1800" },
+              { "S": "101200", "PnL": "0" },
+              { "S": "107500", "PnL": "1200" },
+              { "S": "113800", "PnL": "0" },
+              { "S": "117000", "PnL": "-2000" },
+              { "S": "120000", "PnL": "-3800" }
             ]
           }
         }
