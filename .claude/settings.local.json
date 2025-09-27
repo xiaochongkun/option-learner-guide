@@ -81,7 +81,8 @@
       "Read(///**)",
       "Bash(npm ci:*)",
       "Bash(git branch:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "WebFetch(domain:localhost)"
     ],
     "deny": [],
     "ask": []
