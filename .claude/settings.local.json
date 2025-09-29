@@ -82,7 +82,8 @@
       "Bash(npm ci:*)",
       "Bash(git branch:*)",
       "Bash(git checkout:*)",
-      "WebFetch(domain:localhost)"
+      "WebFetch(domain:localhost)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
