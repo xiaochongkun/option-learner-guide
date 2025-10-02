@@ -1,10 +1,10 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Image from 'next/image'
 import type { TeachingData, TabBlock } from '@/lib/types'
 import { toSeries } from '@/lib/pnl'
 
 export default function Page(){
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
   const [data, setData] = useState<TeachingData|null>(null)
   const [active, setActive] = useState<string>('')
   const [S0, setS0] = useState<number>(60000)
@@ -13,7 +13,7 @@ export default function Page(){
   const esRef = useRef<EventSource|null>(null)
 
   useEffect(() => {
-    fetch('/api/teaching', { cache:'no-store' }).then(r=>r.json()).then((d:TeachingData) => {
+    fetch(`${basePath}/api/teaching`, { cache:'no-store' }).then(r=>r.json()).then((d:TeachingData) => {
       setData(d); setActive(d.tabs[0]?.id ?? '')
     }).catch((error) => {
       console.error('Failed to fetch teaching data:', error)
@@ -53,7 +53,7 @@ export default function Page(){
 
   // 订阅 SSE（示例，可关可开）
   useEffect(() => {
-    const es = new EventSource('/api/stream')
+    const es = new EventSource(`${basePath}/api/stream`)
     esRef.current = es
     es.onmessage = (ev) => {
       try {
@@ -72,8 +72,8 @@ export default function Page(){
   return (
     <main style={{maxWidth:1080, margin:'0 auto', padding:20, position:'relative'}}>
       <div style={{position:'absolute', top:20, left:20, display:'flex', alignItems:'center', gap:8}}>
-        <Image
-          src="/signalplus-logo-vertical.png"
+        <img
+          src={`${basePath}/signalplus-logo-vertical.png`}
           alt="SignalPlus Logo"
           width={40}
           height={60}

@@ -2,8 +2,8 @@
 set -e
 
 PROJECT_DIR="/home/kunkka/projects/option-learner-guide"
-DOMAIN="kunkka.opsignalplus.com"
-PORT_DEFAULT="3601"
+DOMAIN="kunkka.spailab.com"
+PORT_DEFAULT="3101"
 NPM_BIN="/usr/bin/npm"
 NODE_BIN="/usr/bin/node"
 MODE_DEFAULT="pm2"
@@ -20,8 +20,8 @@ while [[ $# -gt 0 ]]; do
             ;;
         --port)
             PORT="$2"
-            if [[ ! "$PORT" =~ ^36[0-9][0-9]$ ]] || [[ "$PORT" -lt 3601 ]] || [[ "$PORT" -gt 3700 ]]; then
-                echo "错误：端口必须在 3601-3700 范围内"
+            if [[ "$PORT" -lt 3101 || "$PORT" -gt 3200 ]]; then
+                echo "错误：端口必须在 3101-3200 范围内（平台分配）"
                 exit 1
             fi
             shift 2
@@ -97,22 +97,8 @@ else
     echo "✓ Systemd 部署完成"
 fi
 
-echo "=== 5. 配置 Nginx ==="
-if [[ ! -d "/etc/nginx/sites-available" ]]; then
-    echo "错误：Nginx 未安装或配置不正确"
-    exit 1
-fi
-
-sudo cp ops/nginx.conf /etc/nginx/sites-available/$DOMAIN
-sudo ln -sf /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/
-
-if sudo nginx -t; then
-    sudo systemctl reload nginx
-    echo "✓ Nginx 配置完成"
-else
-    echo "错误：Nginx 配置验证失败"
-    exit 1
-fi
+echo "=== 5. 反向代理配置提示（未自动修改） ==="
+echo "平台统一使用 Caddy 并由管理员维护。若需在主域 $DOMAIN 下开通 $PROJECT_DIR 的子路径 /option-learner-guide，请联系管理员按文档添加 handle 反代到 127.0.0.1:$PORT。"
 
 echo ""
 echo "=== 部署完成 ==="

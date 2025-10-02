@@ -1,8 +1,8 @@
 # 部署运行手册（Option Learner Guide）
 
 **项目路径**：/home/kunkka/projects/option-learner-guide
-**公网地址/域名**：172.93.186.229
-**默认端口**：3000
+**公网地址/域名**：kunkka.spailab.com（由管理员统一维护）
+**默认端口**：3101（本用户可用端口 3101–3200）
 
 ## 快速开始（推荐 tmux 防断线）
 ```bash
@@ -16,13 +16,13 @@ bash ops/deploy.sh --domain 172.93.186.229 --project-dir /home/kunkka/projects/o
 
 ### 1. PM2 模式（推荐）
 ```bash
-bash ops/deploy.sh --mode pm2
+bash ops/deploy.sh --mode pm2 --port 3101
 ```
 - 自动重启、日志管理
 - 支持集群模式
 - 内置进程监控
 
-### 2. Systemd 模式
+### 2. Systemd 模式（若平台允许）
 ```bash
 bash ops/deploy.sh --mode systemd
 ```
@@ -41,8 +41,8 @@ bash ops/deploy.sh --mode direct
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| --domain | 172.93.186.229 | 公网域名/IP |
-| --port | 3000 | 应用端口 |
+| --domain | kunkka.spailab.com | 公网域名/IP |
+| --port | 3101 | 应用端口（范围 3101–3200） |
 | --project-dir | /home/kunkka/projects/option-learner-guide | 项目路径 |
 | --mode | pm2 | 运行模式 (pm2/systemd/direct) |
 | --node-bin | /usr/bin/node | Node.js 可执行文件路径 |
@@ -82,11 +82,9 @@ sudo lsof -i :3000
 sudo kill -9 <PID>
 ```
 
-### 2. Nginx 配置检查
-```bash
-sudo nginx -t
-sudo systemctl reload nginx
-```
+### 2. 外网发布方式
+- 方式A（管理员协助，推荐稳定）：联系管理员在 Caddy 里为路径 `/option-learner-guide` 增加反代到 `127.0.0.1:3101`（需保留前缀）。
+- 方式B（自助临时外网，快速预览）：使用 Cloudflare Quick Tunnel（见下文“Quick Tunnel 自助发布”）。
 
 ### 3. 日志查看
 ```bash
@@ -113,6 +111,21 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
+## Quick Tunnel 自助发布
+
+无需管理员即可获得公网 URL（临时域名）。脚本会安装 `cloudflared` 到 `~/bin` 并用 pm2 常驻。
+
+```bash
+bash ops/publish-cloudflared.sh
+# 输出形如：https://xxxx.trycloudflare.com/option-learner-guide
+```
+
+停止/重启：
+```bash
+pm2 restart olg-tunnel && pm2 save
+pm2 stop olg-tunnel && pm2 delete olg-tunnel && pm2 save
+```
+
 ## SSE 接口说明
 
 应用包含 Server-Sent Events 接口 `/api/stream`，Nginx 已配置：
@@ -122,7 +135,7 @@ npm install
 
 测试 SSE 接口：
 ```bash
-curl -N http://172.93.186.229/api/stream
+curl -N http://127.0.0.1:3101/option-learner-guide/api/stream
 ```
 
 ## 安全建议
